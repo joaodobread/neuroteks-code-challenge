@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+    php:
+        image: php:7.2-apache
+        container_name: php
+
+        volumes:
+            - ./api:/var/www/html/
+
+        ports:
+            - 8000:80
+
+        depends_on:
+            - composer
+
+    composer:
+        image: composer
+        container_name: composer
+
+        working_dir: /var/www/html
+
+        volumes:
+            - ./api/:/var/www/html
+
+        command: dump-autoload
+
+        depends_on:
+            - database
+
+    database:
+        container_name: api
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_USER: docker
+            MYSQL_PASSWORD: docker
+            MYSQL_DATABASE: newsDatabase
+
+        ports:
+            - "3306:3306"

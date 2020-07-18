@@ -1,0 +1,9 @@
+.prettierrc
+
+database/
+database/*
+
+api/vendor
+api/vendor/*
+
+app/node_modules

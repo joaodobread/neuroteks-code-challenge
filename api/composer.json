@@ -1,0 +1,9 @@
+{
+    "name": "BreadApi",
+    "description": "Meu mini framework",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    }
+}
