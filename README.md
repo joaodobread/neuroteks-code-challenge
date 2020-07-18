@@ -14,14 +14,14 @@
 +-- app
 ```
 
-# [Api](./api/README.md)
+# [Api](./api/)
 
 O diretório contem uma api onde será feita o CRUD de notícias
 
-# [Bot](./bot/README.md)
+# [Bot](./bot/)
 
 O diretório contem uma api + bot em Python
 
-# [App](./app/README.md)
+# [App](./app/)
 
 O diretório contém o app web desenvolvido em VueJS
