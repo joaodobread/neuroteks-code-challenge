@@ -1,5 +1,5 @@
 # Bot
 
-[Voltar](../README.md)
+[Voltar](../)
 
 -   Construido em Python + Flask + BeautifulSoup

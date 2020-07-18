@@ -1,5 +1,5 @@
 # App web
 
-[Voltar](../README.md)
+[Voltar](../)
 
 -   Construido em VueJS
