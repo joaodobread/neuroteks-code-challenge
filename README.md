@@ -2,16 +2,16 @@
 
 ---
 
--   Toda a aplicação está rodando em Docker utilizando do `docker-compose`
+- Toda a aplicação está rodando em Docker utilizando do `docker-compose`
 
 ### Estrutura dos diretórios
 
-```
+```bash
 .
-+-- api
-+-- database
-+-- bot
-+-- app
+├──api
+├──database
+├──bot
+└──app
 ```
 
 # [Api](./api/)

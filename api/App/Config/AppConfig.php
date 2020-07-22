@@ -9,7 +9,7 @@ class AppConfig
         "db_user" => "root",
         "db_pass" => "admin",
         "db_name" => "newsDatabase",
-        "db_host" => "api"
+        "db_host" => "database"
     );
     static public $appInfo = array(
         "app-name" => "BreadApi"

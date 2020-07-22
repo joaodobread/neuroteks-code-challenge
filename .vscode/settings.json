@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "/home/bread/.local/share/virtualenvs/bot-yN6ZL7ZF/bin/python",
+    "files.exclude": {
+        "*/**/__pycache__": true
+    }
+}

@@ -1,4 +1,5 @@
 <?php
+header('content-type: application/json; charset=utf-8');
 
 define("BASE_DIRECTORY", __DIR__);
 

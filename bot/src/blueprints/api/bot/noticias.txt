@@ -1,0 +1,18 @@
+
+Pagina de noticias:
+    - Card:
+        
+
+
+Elementos da noticia em si:
+    - Image: 
+        Thumb na página inicial.
+
+    - Titulo:
+        - xpath: /html/body/div[3]/main/article/div[4]/div/div/div[1]/div/div/header/div/h1
+        - tag: <h1 class="c-content-head__title" itemprop="headline"></h1>
+
+    - Content:
+        - xpath: /html/body/div[3]/main/article/div[5]/div/div/div/div/div[2]/div
+        - tag: <div class="c-news__content"></div>
+

@@ -34,18 +34,28 @@ class Rest
 
     public function requestHandler()
     {
-        header('Content-Type: application/json');
-
+        
         if (!isset($this->router))
             $return = array("message" => "Rotas precisam ser definidas");
 
         $payload = self::parseUrl($_REQUEST, $_SERVER);
+
+        
+
+        if ($_SERVER["REQUEST_METHOD"] == "PUT") {
+            $formdata = array();
+            self::parse_raw_http_request($formdata);
+
+            $payload->body = array_merge($payload->body, $formdata);
+        }
 
         $resource = $this->findResource($payload->path, $payload->http_method);
 
         try {
             if (isset($resource)) {
                 $return = $resource->call($payload);
+                if (!isset($return))
+                    $return = array("message" => "Operação bem sucedida", "status" => 200);
                 http_response_code(200);
             } else {
                 $return = array("error" => "Rota não encontrada");
@@ -74,6 +84,33 @@ class Rest
 
         return $params;
     }
+
+
+    static function parse_raw_http_request(array &$a_data)
+    {
+        $input = file_get_contents('php://input');
+        preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
+        $boundary = $matches[1];
+
+        $a_blocks = preg_split("/-+$boundary/", $input);
+        array_pop($a_blocks);
+
+        foreach ($a_blocks as $id => $block) {
+            if (empty($block))
+                continue;
+
+
+            if (strpos($block, 'application/octet-stream') !== FALSE) {
+
+                preg_match("/name=\"([^\"]*)\".*stream[\n|\r]+([^\n\r].*)?$/s", $block, $matches);
+            } else {
+
+                preg_match('/name=\"([^\"]*)\"[\n|\r]+([^\n\r].*)?\r$/s', $block, $matches);
+            }
+            $a_data[$matches[1]] = $matches[2];
+        }
+    }
+
 
     # force standard methods to singleton work
     public function __construct()

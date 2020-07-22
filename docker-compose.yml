@@ -1,44 +1,81 @@
 version: "3"
+networks:
+  lan_access:
+    driver: bridge
 
 services:
-    php:
-        image: php:7.2-apache
-        container_name: php
+  php:
+    container_name: php
+    build:
+      context: ./api
+      dockerfile: Dockerfile
 
-        volumes:
-            - ./api:/var/www/html/
+    volumes:
+      - ./api/:/var/www/html/
 
-        ports:
-            - 8000:80
+    ports:
+      - 8000:80
 
-        depends_on:
-            - composer
+    depends_on:
+      - database
+    networks:
+      - lan_access
+      - default
+  composer:
+    image: composer
+    container_name: composer
+    links:
+      - php:php
+    command: dump-autoload
+    working_dir: /var/www/html
+    volumes:
+      - ./api/:/var/www/html
 
-    composer:
-        image: composer
-        container_name: composer
+  database:
+    container_name: database
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_DATABASE: newsDatabase
+    ports:
+      - 3306:3306
+  bot:
+    container_name: bot
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - ./bot/:/app
+    environment:
+      FLASK_APP: "main.py"
+      FLASK_ENV: development
+      FLASK_RUN_HOST: "0.0.0.0"
+      FLASK_RUN_PORT: 5000
+    networks:
+      - lan_access
+      - default
+    depends_on:
+      - database
 
-        working_dir: /var/www/html
+  app:
+    container_name: app
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    volumes:
+      - ./app/:/app
 
-        volumes:
-            - ./api/:/var/www/html
+    ports:
+      - 8080:80
 
-        command: dump-autoload
-
-        depends_on:
-            - database
-
-    database:
-        container_name: api
-        image: mysql
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
-
-        environment:
-            MYSQL_ROOT_PASSWORD: admin
-            MYSQL_USER: docker
-            MYSQL_PASSWORD: docker
-            MYSQL_DATABASE: newsDatabase
-
-        ports:
-            - "3306:3306"
+    depends_on:
+      - database
+    networks:
+      - lan_access
+      - default
