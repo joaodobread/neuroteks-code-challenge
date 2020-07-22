@@ -1,0 +1,18 @@
+#Build Stage Start
+
+#Specify a base image
+FROM node:12.4.0-alpine as builder
+
+#Specify a working directory
+WORKDIR /app
+
+#Copy the dependencies file
+COPY package.json .
+
+#Install dependencies
+RUN npm install -qy
+
+#Copy remaining files
+COPY . .
+
+CMD ["npm", "run", "serve"]
